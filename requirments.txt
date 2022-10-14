@@ -1,0 +1,6 @@
+yandex_music
+eyed3
+flask_socketio
+selenium
+vk_api
+bs4

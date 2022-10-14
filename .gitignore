@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+tokens.py
+VK_cfg
+vktoken.py
+vk_config.v2.json
+.obsidian/
