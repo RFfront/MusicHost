@@ -4,7 +4,7 @@ from pathlib import Path
 from pprint import pprint
 import re
 import requests
-from yandex_music import Client, exceptions
+from yandex_music import Client, exceptions,Track
 from tokens import YandexToken
 import eyed3
 from eyed3.id3.frames import ImageFrame
@@ -50,7 +50,7 @@ def search_best_and_save(query: str, folder=cache):
             eyedFile.tag.save()
 
 
-def downloadTrack(track, folder):
+def downloadTrack(track:Track, folder):
     artists = ''
     if track.artists:
         artists = ' - ' + ', '.join(track.artists_name())
@@ -62,6 +62,7 @@ def downloadTrack(track, folder):
     if fPath.stat().st_size == 0:
         st = datetime.today()
         print(f"Downloading {fPath}")
+        fPath.unlink()
         try:
             track.download(filename=f"{fPath}", bitrate_in_kbps=320)
         except exceptions.InvalidBitrateError:
@@ -76,7 +77,8 @@ def downloadTrack(track, folder):
         eyedFile.tag.title = track.title
         eyedFile.tag.year = Date(track.albums[0].year)
         genre = track.albums[0].genre.replace("genre", "")
-        genre = genre.replace('rus','')
+        genre = genre.replace('rus','').replace('foreign','')
+        
         eyedFile.tag.genre = genre
         eyedFile.tag.album = track.albums[0].title
         eyedFile.tag.save()
@@ -128,7 +130,12 @@ def downloadPlaylist(playlist, folder=cache):
         for t in tracks:
             downloadTrack(*t)
 
-
+def downloadByURL(url:str):
+    track_id = int(url.split('track/')[-1])
+    track = client.tracks(track_id)[0]
+    print(track.title)
+    downloadTrack(track,cache)
+    
 if __name__ == '__main__':
     pass
     # pl2 = client.users_playlists_list()
