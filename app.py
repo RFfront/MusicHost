@@ -1,9 +1,9 @@
-from pprint import pprint
+from pprint import pprint,pformat
 import socket
 import threading
 from flask import Flask, Response, copy_current_request_context, render_template, session, request
 import subprocess
-
+from models import *
 
 from vkmusget import LoongPoool
 port = 5001
@@ -19,9 +19,12 @@ def openBrowser(http):
 
 @app.route('/newMsgVK', methods=["POST"])
 def msg_vk_wrap():
-    pprint(request.get_json())
+    VKMessages(**request.get_json()).save()
     return Response(status=200)
 
+@app.get('/threads')
+def getThreads():
+    return pformat(list(threading.enumerate()))
 
 def retIP():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
