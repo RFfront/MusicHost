@@ -1,0 +1,24 @@
+{
+  "name": "MusicHostIntegration",
+  "description": "отправка песен в очередь из браузера",
+  "version": "1.0",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "matches": ["http://music.yandex.by/*", "https://music.yandex.by/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "action": {
+    "default_icon": {
+      "128": "/icon128.png"
+    },
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "128": "/icon128.png"
+  },
+  "permissions": ["activeTab", "scripting"]
+}
