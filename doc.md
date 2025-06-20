@@ -1,0 +1,1 @@
+https://yandex-music.readthedocs.io/en/main/

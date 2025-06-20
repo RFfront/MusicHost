@@ -4,3 +4,5 @@ flask_socketio
 selenium
 vk_api
 bs4
+aiogram
+peewee

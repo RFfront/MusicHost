@@ -4,7 +4,7 @@ from pathlib import Path
 from pprint import pprint
 import re
 import requests
-from yandex_music import Client, exceptions,Track
+from yandex_music import Client, exceptions, Track
 from tokens import YandexToken
 import eyed3
 from eyed3.id3.frames import ImageFrame
@@ -50,7 +50,7 @@ def search_best_and_save(query: str, folder=cache):
             eyedFile.tag.save()
 
 
-def downloadTrack(track:Track, folder):
+def downloadTrack(track: Track, folder):
     artists = ''
     if track.artists:
         artists = ' - ' + ', '.join(track.artists_name())
@@ -77,8 +77,8 @@ def downloadTrack(track:Track, folder):
         eyedFile.tag.title = track.title
         eyedFile.tag.year = Date(track.albums[0].year)
         genre = track.albums[0].genre.replace("genre", "")
-        genre = genre.replace('rus','').replace('foreign','')
-        
+        genre = genre.replace('rus', '').replace('foreign', '')
+
         eyedFile.tag.genre = genre
         eyedFile.tag.album = track.albums[0].title
         eyedFile.tag.save()
@@ -130,16 +130,28 @@ def downloadPlaylist(playlist, folder=cache):
         for t in tracks:
             downloadTrack(*t)
 
-def downloadByURL(url:str):
+
+def downloadByURL(url: str):
     track_id = int(url.split('track/')[-1])
     track = client.tracks(track_id)[0]
     print(track.title)
-    downloadTrack(track,cache)
-    
+    downloadTrack(track, cache)
+
+
 if __name__ == '__main__':
     pass
+
+    # que=client.queues_list()
+    # que = client.queue("648825e9c0c7cb38090326ff")
+    # for i in que.tracks[5:30]:
+    #     track = client.tracks(i.track_id)[0]
+    #     # answ=input(track.title)
+    #     downloadTrack(track,cache)
+        # if answ=='y':
+    url = 'https://music.yandex.by/album/16002307/track/84428655'
+    downloadByURL(url)
     # pl2 = client.users_playlists_list()
-    
+
     # for i,e in enumerate(pl2):
     #     print(i,e.title)
 
@@ -147,7 +159,7 @@ if __name__ == '__main__':
     # pl[0].playlist.tit
     # for i in pl:
     #     print(i.playlist.title)
-    # downloadPlaylist(pl2[9])
+    # downloadPlaylist(pl2[13])
     # search_best_and_save('time in a bottle ')
     # cache = Path.cwd()/".cache/"
     # cache.mkdir(exist_ok=True)

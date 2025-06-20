@@ -16,7 +16,8 @@ class LongPoolType(IntEnum):
 
 session = vk_api.VkApi(login=log, password=pas, token=vktok,
                        app_id=6121396, config_filename='VK_cfg')
-session.auth()
+session.http.headers['User-agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0'
+session.auth(token_only=True)
 api = session.get_api()
 
 
@@ -27,10 +28,9 @@ def LoongPoool():
     while True:
         response = requests.get(
             f"https://{serverParams['server']}?act=a_check&key={serverParams['key']}&ts={serverParams['ts']}&wait=60&mode=2&version=2").json()
-        updates = response['updates']
+        updates = response.get('updates',None)
         if updates:
             for element in updates:
-                print(element)
                 if element[0] == LongPoolType.NewMessage:
                     requests.post('http://localhost:5001/newMsgVK', json={
                                   'message_id': element[1],
@@ -57,3 +57,4 @@ def downloadFromVK(audioAttachment):
 if __name__ == "__main__":
     thread = threading.Thread(target=LoongPoool, daemon=True)
     thread.start()
+    # https://dev.vk.com/method/messages.getById

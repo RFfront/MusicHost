@@ -1,6 +1,7 @@
 import json
 from time import sleep
-
+import selenium
+print(selenium.__version__)
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.remote.command import Command
